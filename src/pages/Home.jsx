@@ -1,28 +1,32 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-function Home() {
-  const history = useHistory();
-  return (
-    <div>
-      <input type="text" />
-      <p
-        data-testid="home-initial-message"
-      >
-        Digite algum termo de pesquisa ou escolha uma categoria.
-      </p>
-      <button
-        type="button"
-        data-testid="shopping-cart-button"
-        onClick={ () => {
-          history.push('/carrinho');
-        } }
-      >
-        Carrinho
+class Home extends React.Component {
+  render() {
+    const { history } = this.props;
+    return (
+      <div>
+        <input type="text" />
+        <p
+          data-testid="home-initial-message"
+        >
+          Digite algum termo de pesquisa ou escolha uma categoria.
+        </p>
+        <button
+          type="button"
+          data-testid=""
+          onClick={ () => history.push('/carrinho') }
+        >
+          Carrinho
 
-      </button>
-    </div>
-  );
+        </button>
+      </div>
+    );
+  }
 }
+
+Home.propTypes = {
+  history: PropTypes.objectOf.isRequired,
+};
 
 export default Home;
