@@ -13,11 +13,13 @@ class Home extends React.Component {
       nameProduct: '',
       catProduct: '',
       products: [],
+      cartProd: [],
     };
   }
 
   componentDidMount() {
     this.categories();
+    if (localStorage.length === 0) { return localStorage.setItem('cart', '[]'); }
   }
 
   categories = async () => {
@@ -40,6 +42,24 @@ class Home extends React.Component {
     this.setState({ catProduct: id });
     const data = await getProductsFromCategoryAndQuery(id, null);
     this.setState({ products: data.results });
+  }
+
+  localStg = (product) => {
+    const localStorageCart = JSON.parse(localStorage.getItem('cart'));
+    if (localStorageCart.some((element) => element.id === product.id)) {
+      let count = Number(localStorage.getItem(product.id));
+      localStorage.setItem(product.id, count += 1);
+    } else {
+      const carrinho = [...localStorageCart, product];
+      localStorage.setItem('cart', JSON.stringify(carrinho));
+      localStorage.setItem(product.id, 1);
+    }
+  }
+
+  addToCart = (prod) => {
+    this.setState((prevState) => ({
+      cartProd: [...prevState.cartProd, prod],
+    }), this.localStg(prod));
   }
 
   render() {
@@ -98,6 +118,13 @@ class Home extends React.Component {
                   {prod.currency_id}
                 </h4>
               </Link>
+              <button
+                type="button"
+                data-testid="product-add-to-cart"
+                onClick={ () => this.addToCart(prod) }
+              >
+                Adicionar ao Carrinho
+              </button>
             </div>
           )) : <h2>Nenhum produto foi encontrado</h2>)}
         </div>
