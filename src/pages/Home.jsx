@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends React.Component {
@@ -80,7 +81,7 @@ class Home extends React.Component {
                 data-testid="category"
                 value={ cat.name }
                 onClick={ () => this.fetchCategory(cat.id) }
-                checked={ catProduct === cat.id }
+                hecked={ catProduct === cat.id }
               />
               {cat.name}
             </label>))}
@@ -88,13 +89,15 @@ class Home extends React.Component {
         <div>
           {!loading && (products.length !== 0 ? products.map((prod) => (
             <div key={ prod.id } data-testid="product">
-              <img src={ prod.thumbnail } alt={ prod.title } />
-              <h3>{ prod.title }</h3>
-              <h4>
-                { prod.price }
-                {' '}
-                {prod.currency_id}
-              </h4>
+              <Link to={ `/detalhes${prod.id}` } data-testid="product-detail-link">
+                <img src={ prod.thumbnail } alt={ prod.title } />
+                <h3>{ prod.title }</h3>
+                <h4>
+                  { prod.price }
+                  {' '}
+                  {prod.currency_id}
+                </h4>
+              </Link>
             </div>
           )) : <h2>Nenhum produto foi encontrado</h2>)}
         </div>
