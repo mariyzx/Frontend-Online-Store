@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getCategories } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends React.Component {
   constructor() {
@@ -10,6 +10,7 @@ class Home extends React.Component {
       categories: [],
       loading: false,
       nameProduct: '',
+      catProduct: '',
       products: [],
     };
   }
@@ -19,9 +20,8 @@ class Home extends React.Component {
   }
 
   categories = async () => {
-    this.setState({ loading: true });
     const cat = await getCategories();
-    this.setState({ categories: cat, loading: false });
+    this.setState({ categories: cat });
   };
 
   seachProduct = ({ target }) => {
@@ -29,16 +29,21 @@ class Home extends React.Component {
   }
 
   fetchProducts = async () => {
+    this.setState({ loading: true });
     const { nameProduct } = this.state;
-    const url = `https://api.mercadolibre.com/sites/MLB/search?q=${nameProduct}`;
-    const response = await fetch(url);
-    const data = await response.json();
+    const data = await getProductsFromCategoryAndQuery(null, nameProduct);
+    this.setState({ products: data.results, loading: false });
+  }
+
+  fetchCategory = async (id) => {
+    this.setState({ catProduct: id });
+    const data = await getProductsFromCategoryAndQuery(id, null);
     this.setState({ products: data.results });
   }
 
   render() {
     const { history } = this.props;
-    const { loading, categories, products } = this.state;
+    const { loading, categories, products, catProduct } = this.state;
     return (
       <div>
         <label htmlFor="search">
@@ -68,16 +73,20 @@ class Home extends React.Component {
           Carrinho
         </button>
         <div>
-          {!loading && (
-            categories.map((cat) => (
-              <label htmlFor="category" key={ cat.id } data-testid="category">
-                <input type="radio" />
-                {cat.name}
-              </label>))
-          )}
+          {!loading && categories.map((cat) => (
+            <label htmlFor="category" key={ cat.id }>
+              <input
+                type="radio"
+                data-testid="category"
+                value={ cat.name }
+                onClick={ () => this.fetchCategory(cat.id) }
+                checked={ catProduct === cat.id }
+              />
+              {cat.name}
+            </label>))}
         </div>
         <div>
-          {products.length !== 0 ? products.map((prod) => (
+          {!loading && (products.length !== 0 ? products.map((prod) => (
             <div key={ prod.id } data-testid="product">
               <img src={ prod.thumbnail } alt={ prod.title } />
               <h3>{ prod.title }</h3>
@@ -87,7 +96,7 @@ class Home extends React.Component {
                 {prod.currency_id}
               </h4>
             </div>
-          )) : <h2>Nenhum produto foi encontrado</h2>}
+          )) : <h2>Nenhum produto foi encontrado</h2>)}
         </div>
       </div>
     );
