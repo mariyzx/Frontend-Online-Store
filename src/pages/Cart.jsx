@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Cart extends React.Component {
   constructor() {
@@ -50,6 +51,7 @@ class Cart extends React.Component {
 
   render() {
     const { products } = this.state;
+    const { history } = this.props;
     return (
       <div>
         {products.length === 0 ? (
@@ -79,11 +81,22 @@ class Cart extends React.Component {
               >
                 +
               </button>
+              <button
+                type="button"
+                data-testid="checkout-products"
+                onClick={ () => history.push('/finalizar') }
+              >
+                Finalizar compra
+              </button>
             </div>
           ))}
       </div>
     );
   }
 }
+
+Cart.propTypes = {
+  history: PropTypes.func.isRequired,
+};
 
 export default Cart;

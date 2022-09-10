@@ -5,6 +5,7 @@ import { Route,
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Details from './pages/Details';
+import Checkout from './pages/Checkout';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route exact path="/" component={ Home } />
         <Route path="/carrinho" component={ Cart } />
         <Route path="/detalhes:id" render={ (props) => <Details { ...props } /> } />
+        <Route path="/finalizar" component={ Checkout } />
       </Switch>
     </Router>
   );
