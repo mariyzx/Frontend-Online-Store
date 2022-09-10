@@ -8,13 +8,21 @@ class Details extends React.Component {
     this.state = {
       product: '',
       loading: true,
+      review: [],
     };
   }
 
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
     this.getProduct(id);
-    if (localStorage.length === 0) { return localStorage.setItem('cart', '[]'); }
+    if (localStorage.length === 0) {
+      return localStorage.setItem('cart', '[]');
+    }
+    if (!localStorage.getItem('UserReview')) {
+      localStorage.setItem('UserReview', '[]');
+    }
+
+    this.getReview();
   }
 
   getProduct = async (id) => {
@@ -36,12 +44,51 @@ class Details extends React.Component {
     }
   }
 
+  getReview = () => {
+    const x = JSON.parse(localStorage.getItem('UserReview'));
+    this.setState({
+      review: x,
+    });
+  }
+
   addToCart = (prod) => {
     this.localStg(prod);
   }
 
+  handleChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  reset = () => {
+    this.setState({
+      detail: '',
+      rating: '',
+      email: '',
+    });
+  }
+
+  handleClick = (e) => {
+    e.preventDefault();
+    const { detail, rating, email } = this.state;
+    const aval = { detail, rating, email };
+
+    const getAval = JSON.parse(localStorage.getItem('UserReview'));
+
+    const newAval = ([...getAval, aval]);
+
+    localStorage.setItem('UserReview', JSON.stringify(newAval));
+    this.setState((prevState) => ({
+      review: [...prevState.review, aval],
+    }));
+
+    this.reset();
+  }
+
   render() {
-    const { product, loading } = this.state;
+    const { product, loading, email, detail, review } = this.state;
     const { history } = this.props;
     return (
       <div>
@@ -71,6 +118,79 @@ class Details extends React.Component {
             </button>
           </div>
         )}
+        <form>
+          <h1>Avaliações</h1>
+          <input
+            type="email"
+            name="email"
+            onChange={ this.handleChange }
+            value={ email }
+            data-testid="product-detail-email"
+            placeholder="Email"
+          />
+          <label htmlFor="rating">
+            Estrelas
+            <input
+              onChange={ this.handleChange }
+              type="radio"
+              name="rating"
+              value={ 1 }
+              data-testid="1-rating"
+            />
+            <input
+              onChange={ this.handleChange }
+              type="radio"
+              name="rating"
+              value={ 2 }
+              data-testid="2-rating"
+            />
+            <input
+              onChange={ this.handleChange }
+              type="radio"
+              name="rating"
+              value={ 3 }
+              data-testid="3-rating"
+            />
+            <input
+              onChange={ this.handleChange }
+              type="radio"
+              name="rating"
+              value={ 4 }
+              data-testid="4-rating"
+            />
+            <input
+              onChange={ this.handleChange }
+              type="radio"
+              name="rating"
+              value={ 5 }
+              data-testid="5-rating"
+            />
+          </label>
+          <textarea
+            name="detail"
+            onChange={ this.handleChange }
+            placeholder="Escreva sua avaliação"
+            value={ detail }
+            data-testid="product-detail-evaluation"
+          />
+          <button
+            type="submit"
+            onClick={ this.handleClick }
+            data-testid="submit-review-btn"
+          >
+            Enviar
+
+          </button>
+        </form>
+        <div>
+          {review.map((aval) => (
+            <div key={ aval.email }>
+              <h4>{aval.email}</h4>
+              <p>{aval.rating}</p>
+              <p>{aval.detail}</p>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
