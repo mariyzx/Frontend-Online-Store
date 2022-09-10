@@ -14,6 +14,7 @@ class Details extends React.Component {
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
     this.getProduct(id);
+    if (localStorage.length === 0) { return localStorage.setItem('cart', '[]'); }
   }
 
   getProduct = async (id) => {
@@ -21,6 +22,22 @@ class Details extends React.Component {
     const response = await fetch(url);
     const data = await response.json();
     this.setState({ product: data, loading: false });
+  }
+
+  localStg = (product) => {
+    const localStorageCart = JSON.parse(localStorage.getItem('cart'));
+    if (localStorageCart.some((element) => element.id === product.id)) {
+      let count = Number(localStorage.getItem(product.id));
+      localStorage.setItem(product.id, count += 1);
+    } else {
+      const carrinho = [...localStorageCart, product];
+      localStorage.setItem('cart', JSON.stringify(carrinho));
+      localStorage.setItem(product.id, 1);
+    }
+  }
+
+  addToCart = (prod) => {
+    this.localStg(prod);
   }
 
   render() {
@@ -45,6 +62,13 @@ class Details extends React.Component {
               {' '}
               {product.currency_id}
             </h4>
+            <button
+              type="button"
+              data-testid="product-detail-add-to-cart"
+              onClick={ () => this.addToCart(product) }
+            >
+              Adicionar ao Carrinho
+            </button>
           </div>
         )}
       </div>
