@@ -1,0 +1,108 @@
+header {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: -2rem;
+}
+
+header > img {
+  margin-left: 1rem;
+}
+
+header > button {
+  border: 2px solid black;
+  border-radius: 7px;
+  margin-right: 2rem;
+  padding: 1.3px;
+}
+
+header > h1 {
+  margin-right: 5rem;
+}
+
+.search {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.input-search {
+  display: flex;
+  gap: 0.3rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.button-search {
+  border: 2px solid transparent;
+  border-radius: 7px;
+  width: 5%;
+}
+
+.button-search:hover, .add-to-cart-button:hover {
+  background-color: rgb(224, 219, 219);
+  border: 2px solid rgb(78, 77, 77);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.products {
+  align-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.products > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding: 1rem;
+  transition: all 0.3s ease 0s;
+  width: 30%;
+}
+
+.img-prod {
+  border: 2px solid transparent;
+  border-radius: 50%;
+}
+
+.product:hover {
+  background-color: rgba(235, 232, 232, 0.849);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  transform: scale(1.1);
+}
+
+.product > h3 {
+  font-size: 18px;
+  margin-top: 0.3rem;
+}
+
+.add-to-cart {
+  padding: 2px;
+  text-align: center;
+}
+
+.add-to-cart > button {
+  border: 2px solid transparent;
+  border-radius: 13px;
+  padding: 3px;
+}

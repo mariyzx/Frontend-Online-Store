@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../styles/Cart.css';
 
 class Cart extends React.Component {
   constructor() {
@@ -53,43 +54,48 @@ class Cart extends React.Component {
     const { products } = this.state;
     const { history } = this.props;
     return (
-      <div>
-        {products.length === 0 ? (
-          <div data-testid="shopping-cart-empty-message">
-            Seu carrinho está vazio
-          </div>)
-          : products.map((item) => (
-            <div key={ item.id }>
-              <img src={ item.thumbnail } alt={ item.title } />
-              <h4 data-testid="shopping-cart-product-name">{item.title}</h4>
-              <button
-                data-testid="product-decrease-quantity"
-                type="button"
-                value="decrease"
-                onClick={ (e) => this.countFunc(item.id, e) }
-              >
-                -
-              </button>
-              <p data-testid="shopping-cart-product-quantity">
-                {localStorage.getItem(item.id)}
-              </p>
-              <button
-                data-testid="product-increase-quantity"
-                type="button"
-                value="increase"
-                onClick={ (e) => this.countFunc(item.id, e) }
-              >
-                +
-              </button>
-              <button
-                type="button"
-                data-testid="checkout-products"
-                onClick={ () => history.push('/finalizar') }
-              >
-                Finalizar compra
-              </button>
-            </div>
-          ))}
+      <div className="main-cart">
+        <h1>Carrinho</h1>
+        <div className="products-cart">
+          {products.length === 0 ? (
+            <div data-testid="shopping-cart-empty-message">
+              <h2>Seu carrinho está vazio!</h2>
+            </div>)
+            : products.map((item) => (
+              <div key={ item.id } className="item-cart">
+                <img src={ item.thumbnail } alt={ item.title } />
+                <h4 data-testid="shopping-cart-product-name">{item.title}</h4>
+                <div className="quantity">
+                  <button
+                    data-testid="product-decrease-quantity"
+                    type="button"
+                    value="decrease"
+                    onClick={ (e) => this.countFunc(item.id, e) }
+                  >
+                    -
+                  </button>
+                  <p data-testid="shopping-cart-product-quantity">
+                    {localStorage.getItem(item.id)}
+                  </p>
+                  <button
+                    data-testid="product-increase-quantity"
+                    type="button"
+                    value="increase"
+                    onClick={ (e) => this.countFunc(item.id, e) }
+                  >
+                    +
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  data-testid="checkout-products"
+                  onClick={ () => history.push('/finalizar') }
+                >
+                  Finalizar compra
+                </button>
+              </div>
+            ))}
+        </div>
       </div>
     );
   }

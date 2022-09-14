@@ -1,0 +1,25 @@
+.main-checkout {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-checkout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.form-checkout > button {
+  border: 2px solid transparent;
+  border-radius: 7px;
+  padding: 4px;
+  transition: all 0.3s ease 0s;
+}
+
+.form-checkout > button:hover {
+  background-color: #c9d6ff;
+  border: 2px solid rgb(78, 77, 77);
+}
