@@ -15,9 +15,9 @@ O projeto Trybetunes  foi desenvolvido por [Mariana Werneck](https://www.linkedi
 
 ## Preview
 
-![Desempenho](../Frontend-Online-Store/src/images/main.png)
-![Desempenho](../Frontend-Online-Store/src/images/aval.png)
-![Desempenho](../Frontend-Online-Store/src/images/cart.png)
+![Desempenho](/src/images/main.png)
+![Desempenho](/src/images/aval.png)
+![Desempenho](/src/images/cart.png)
 
 ## Connect:
 
